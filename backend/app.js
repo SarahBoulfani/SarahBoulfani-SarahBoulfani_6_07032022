@@ -8,6 +8,11 @@ const app = express();
 //Express prend toutes les requêtes qui ont comme Content-Type application/json et met à disposition leur  body  directement sur l'objet req
 app.use(express.json());
 
+//Importer le router user
+const userRoutes = require('./routes/user');
+
+
+
 //Ajout mongoose, le package Mongoose facilite les interactions entre notre application Express et notre base de données MongoDB.
 const mongoose = require('mongoose');
 
@@ -28,6 +33,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+//Enregister le router user
+app.use('/api/auth', userRoutes);
 
 //Exporter cette constante pour pouvoir y accéder depuis les autres fichiers notamment notre serveur node 
 module.exports = app;
