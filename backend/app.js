@@ -11,7 +11,7 @@ app.use(express.json());
 //Ajout mongoose, le package Mongoose facilite les interactions entre notre application Express et notre base de données MongoDB.
 const mongoose = require('mongoose');
 
-//Connexion de l'API à notre base de données_____________________________________
+//Connexion de l'API à notre base de données
 mongoose.connect(`mongodb+srv://${process.env.BD_USERNAME}:${process.env.BD_SECRET_KEY}@${process.env.BD_CLUSTER_NAME}.mongodb.net/${process.env.BD_NAME}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
@@ -21,7 +21,7 @@ mongoose.connect(`mongodb+srv://${process.env.BD_USERNAME}:${process.env.BD_SECR
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
     
-//Ajout des headers_____________________________
+//Ajout des headers
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
