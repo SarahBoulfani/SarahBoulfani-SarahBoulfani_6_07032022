@@ -15,6 +15,8 @@ const userRoutes = require('./routes/user');
 
 //Ajout mongoose, le package Mongoose facilite les interactions entre notre application Express et notre base de données MongoDB.
 const mongoose = require('mongoose');
+//Imporet path qui donne accés au chemin de notre systeme de fichiers
+const path = require('path');
 
 //Connexion de l'API à notre base de données
 mongoose.connect(`mongodb+srv://${process.env.BD_USERNAME}:${process.env.BD_SECRET_KEY}@${process.env.BD_CLUSTER_NAME}.mongodb.net/${process.env.BD_NAME}?retryWrites=true&w=majority`,
@@ -33,6 +35,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+//Gérer la route vers le dossier images et traiter les requêtes vers la route /image. express.static gère de manière statique la ressource images à chaque requête vers la route images.
+app.use('/images', express.static(path.join(__dirname, 'images')));
 //Enregister le router user
 app.use('/api/auth', userRoutes);
 
