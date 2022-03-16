@@ -18,3 +18,5 @@ const storage = multer.diskStorage({
     callback(null, name + Date.now() + '.' + extension);//appeler le callback pour crée le nom au complet 
   }
 });
+//exporter le middleware multer configuré en passant l'objet storage, et appel single pour un fichier image unique
+module.exports = multer({storage: storage}).single('image');//single pour dire qu'il s'agit d'un fichier unique et pas un ensemble de fichiers
