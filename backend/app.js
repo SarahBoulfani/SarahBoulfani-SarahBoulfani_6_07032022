@@ -10,6 +10,8 @@ app.use(express.json());
 
 //Importer le router user
 const userRoutes = require('./routes/user');
+//Importer le router sauce
+const saucesRoutes = require('./routes/sauce');
 
 
 
@@ -37,8 +39,11 @@ app.use((req, res, next) => {
 });
 //Gérer la route vers le dossier images et traiter les requêtes vers la route /image. express.static gère de manière statique la ressource images à chaque requête vers la route images.
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
 //Enregister le router user
 app.use('/api/auth', userRoutes);
+//Enregistrer notre routeur pour toutes les demandes effectuées vers /api/stuff
+app.use('/api/sauces', saucesRoutes);
 
 //Exporter cette constante pour pouvoir y accéder depuis les autres fichiers notamment notre serveur node 
 module.exports = app;
