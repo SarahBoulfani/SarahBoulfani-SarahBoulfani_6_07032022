@@ -42,7 +42,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 //Enregister le router user
 app.use('/api/auth', userRoutes);
-//Enregistrer notre routeur pour toutes les demandes effectuées vers /api/stuff
+//Enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
 app.use('/api/sauces', saucesRoutes);
 
 //Exporter cette constante pour pouvoir y accéder depuis les autres fichiers notamment notre serveur node 

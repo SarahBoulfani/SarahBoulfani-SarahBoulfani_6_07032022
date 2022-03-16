@@ -11,10 +11,10 @@ const sauceSchema = mongoose.Schema({
     mainPepper: { type: String, required: true },
     imageUrl: { type: String, required: true },
     heat: { type: Number, required: true },
-    likes: { type: Number, default: 0, required: true },
-    dislikes: { type: Number, default: 0, required: true },
-    usersLiked: { type: Array, default: [], required: true },
-    usersDisliked: { type: Array, default: [], required: true },
+    likes: { type: Number, default: 0},
+    dislikes: { type: Number, default: 0},
+    usersLiked: { type: Array, default: []},
+    usersDisliked: { type: Array, default: []},
 });
 //ensuite, nous exportons ce schéma en tant que modèle Mongoose appelé « sauce », le rendant par là même disponible pour notre application Express.
 //La méthode  model  transforme ce modèle en un modèle utilisable.

@@ -72,3 +72,37 @@ exports.getAllSauces = (req, res, next) => {
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({ error }));
 };
+//les likes
+exports.likeSauce = (req, res, next)=>{
+  //Nous avons 3 cas possible
+  //like = 1 (likes = +1)
+  //like = 0 (likes = 0)
+  //like = -1 (dislikes = +1)
+  //like = 0 (dislikes = 0)
+  //récupérer l'id dans l'url de la requete
+  
+  /*Récupérer l'objet de la base de données */
+ Sauce.findOne({_id: req.params.id})
+ .then((sauceObject) => {
+   
+   
+   //utilisation de la méthode javascript includes
+   //La méthode includes() permet de déterminer si un tableau contient une valeur et renvoie true si c'est le cas, false sinon.
+   //utilisation de l'opérateur $inc (mongoDB)
+   //utilisation de l'opérateur $push (mongoDB)
+   //utilisation de l'opérateur $pull (mongoDB)
+   //si userliked est false et si like===1 alors on met le like à +1 et le user dans le tableau userLiked
+   if(!sauceObject.usersLiked.includes(req.body.userId) && req.body.like === 1){
+      //mise à jour base de données
+      Sauce.updateOne({_id: req.params.id},
+        {
+          $inc :{likes : 1}
+        }
+        )
+        .then()
+        .catch();
+   }
+
+ })
+ .catch((error) => res.status(404).json({error}));
+};
