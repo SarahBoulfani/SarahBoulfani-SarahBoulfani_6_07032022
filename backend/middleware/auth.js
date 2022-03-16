@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];//récupérer le token dans le header autorisation, nous utilisons la fonction split pour récupérer tout après l'espace dans le header qui va retourner Bearer en premier element et le token en deuxiéme élément donc l'index 1 pour retourné le token car Bearer a l'index 0. donc ici soit on a le header qui existe pas ou split retourne errur siya erreur elle va l'aaficher dans catch 
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET'); // la fonction verify pour décoder notre token. Si celui-ci n'est pas valide, une erreur sera générée
     const userId = decodedToken.userId;//nous extrayons l'ID utilisateur de notre token car apres décodage le token devient un objet javascript classique donc on peut récupérer le user id qui est dedans .
-
+    req.auth = { userId: userId};  //ajouter le userId à l'objet req pour s'en servir pour la comparaison avec le userId du Thing qu'on essaie de supprimer, car dans controllers delete on a pas accés au userId
     if (req.body.userId && req.body.userId !== userId) {//si la demande contient un ID utilisateur dans le body de la requete, nous le comparons ce contenu à celui extrait du token donc userId. S'ils sont différents, nous générons une erreur 
       throw 'User ID non valable'; //throw pour renvoyer l'erreur dans catch
     } else {//sinon si tout va bien on appelle next
@@ -17,3 +17,5 @@ module.exports = (req, res, next) => {
     res.status(401).json({ error: error | 'Requête non authentifiée!' });
   }
 };
+
+
