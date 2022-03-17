@@ -40,16 +40,16 @@ exports.modifySauce = (req, res, next) => {
       //on modifie imageUrl sinon on prend simplement les information req.body
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body }; //req.body si le fichier n'existe pas 
-    //on utilise le paramètre id de la requête pour trouver la sauce et la modifier avec le même _id
+  //on utilise le paramètre id de la requête pour trouver la sauce et la modifier avec le même _id
   Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
+    .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
     .catch(error => res.status(400).json({ error }));
 };
 
 //Suppression d'une sauce
 //La méthode deleteOne() de notre modèle fonctionne comme findOne() et updateOne() dans le sens où nous lui passons un objet correspondant au document à supprimer. Nous envoyons ensuite une réponse de réussite ou d'échec au front-end.
 exports.deleteSauce = (req, res, next) => {
-   //récupérer sauce de la base de données
+  //récupérer sauce de la base de données
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
       //extraire le nom de fichier à supprimer
@@ -58,7 +58,7 @@ exports.deleteSauce = (req, res, next) => {
       fs.unlink(`images/${filename}`, () => {
         //une fois la suppresion du fichier est effectuer on supprime l'objet dans la base de données
         Sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
+          .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
           .catch(error => res.status(400).json({ error }));
       });
     })
@@ -72,37 +72,72 @@ exports.getAllSauces = (req, res, next) => {
     .then(sauces => res.status(200).json(sauces))
     .catch(error => res.status(400).json({ error }));
 };
-//les likes
-exports.likeSauce = (req, res, next)=>{
-  //Nous avons 3 cas possible
-  //like = 1 (likes = +1)
-  //like = 0 (likes = 0)
-  //like = -1 (dislikes = +1)
-  //like = 0 (dislikes = 0)
-  //récupérer l'id dans l'url de la requete
-  
-  /*Récupérer l'objet de la base de données */
- Sauce.findOne({_id: req.params.id})
- .then((sauceObject) => {
-   
-   
-   //utilisation de la méthode javascript includes
-   //La méthode includes() permet de déterminer si un tableau contient une valeur et renvoie true si c'est le cas, false sinon.
-   //utilisation de l'opérateur $inc (mongoDB)
-   //utilisation de l'opérateur $push (mongoDB)
-   //utilisation de l'opérateur $pull (mongoDB)
-   //si userliked est false et si like===1 alors on met le like à +1 et le user dans le tableau userLiked
-   if(!sauceObject.usersLiked.includes(req.body.userId) && req.body.like === 1){
-      //mise à jour base de données
-      Sauce.updateOne({_id: req.params.id},
-        {
-          $inc :{likes : 1}
-        }
-        )
-        .then()
-        .catch();
-   }
 
- })
- .catch((error) => res.status(404).json({error}));
+
+//les likes
+exports.likeSauce = (req, res, next) => {
+  //Nous avons 4 cas possible
+  //(1)--like = 1 (likes = +1)
+  //récupérer l'id dans l'url de la requete (_id: req.params.id)
+
+  /*Récupérer l'objet de la base de données */
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauceObject) => {
+      //utilisation de la méthode javascript includes
+      //La méthode includes() permet de déterminer si un tableau contient une valeur et renvoie true si c'est le cas, false sinon.
+      //utilisation de l'opérateur $inc (mongoDB)
+      //utilisation de l'opérateur $push (mongoDB)
+      //utilisation de l'opérateur $pull (mongoDB)
+      //si userliked est false et si like===1 alors on met le like à +1 et le user dans le tableau userLiked
+      if (!sauceObject.usersLiked.includes(req.body.userId) && req.body.like === 1) {
+        //mise à jour base de données
+        Sauce.updateOne({ _id: req.params.id },
+          {
+            $inc: { likes: 1 }, //incrémenter de 1
+            $push: { usersLiked: req.body.userId }// ajouter le userId dans le tableau usersLiked pour qu'il puisse plus liké
+          }
+        )
+          .then(() => res.status(201).json({ message: "Like ajouté !" }))
+          .catch((error) => res.status(400).json({ error }));//bad reqest
+      }
+      //(2)--like = 0 (likes = 0)
+      if (sauceObject.usersLiked.includes(req.body.userId) && req.body.like === 0) {
+        //mise à jour base de données
+        Sauce.updateOne({ _id: req.params.id },
+          {
+            $inc: { likes: -1 },
+            $pull: { usersLiked: req.body.userId }// supprimer le userId dans le tableau usersLiked grace à la methode pull
+          }
+        )
+          .then(() => res.status(201).json({ message: "Like supprimé !" }))
+          .catch((error) => res.status(400).json({ error }));//bad reqest
+      }
+      //(3)--like = -1 (dislikes = +1)
+      if (!sauceObject.usersDisliked.includes(req.body.userId) && req.body.like === -1) {
+        //mise à jour base de données
+        Sauce.updateOne({ _id: req.params.id },
+          {
+            $inc: { dislikes: 1 }, //incrémenter de 1
+            $push: { usersDisliked: req.body.userId }// ajouter le userId dans le tableau usersDisliked 
+          }
+        )
+          .then(() => res.status(201).json({ message: "Dislike ajouté !" }))
+          .catch((error) => res.status(400).json({ error }));//bad reqest
+      }
+      //(4)--Aprés un like -1 on met un like = 0 et on enléve le dislike (dislikes = 0)
+      if (sauceObject.usersDisliked.includes(req.body.userId) && req.body.like === 0) {
+        //mise à jour base de données
+        Sauce.updateOne({ _id: req.params.id },
+          {
+            $inc: { dislikes: -1 },
+            $pull: { usersDisliked: req.body.userId }// supprimer le userId dans le tableau usersDisliked grace à la methode pull
+          }
+        )
+          .then(() => res.status(201).json({ message: "Dislike supprimé !" }))
+          .catch((error) => res.status(400).json({ error }));//bad reqest
+      }
+
+
+    })
+    .catch((error) => res.status(404).json({ error }));// objet non trouvable
 };
