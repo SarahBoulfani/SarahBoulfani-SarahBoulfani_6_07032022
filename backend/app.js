@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 // Utilisation de 'helmet' sur l'application 'express' 
-app.use(helmet());
+//app.use(helmet({crossOriginResourcePolicy: false}));
 
 //Importer le router user
 const userRoutes = require('./routes/user');
