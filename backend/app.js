@@ -5,11 +5,17 @@ require('dotenv').config();
 //Importer express
 const express = require('express');
 
+//Importer helmet
+const helmet = require("helmet");
+
 //Créer notre application en utilisant la méthode express ce qui permet de créer une application express
 const app = express();
 
 //Utiliser express.json pour prendre toutes les requêtes qui ont comme Content-Type application/json et mettre à disposition leur  body  directement sur l'objet req
 app.use(express.json());
+
+// Utilisation de 'helmet' sur l'application 'express' 
+app.use(helmet());
 
 //Importer le router user
 const userRoutes = require('./routes/user');
