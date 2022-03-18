@@ -1,6 +1,6 @@
 //Importer le package http node
 const http = require('http');
- //Importer notre application
+//Importer notre application
 const app = require('./app');
 //la fonction normalizePort renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
 const normalizePort = val => {
@@ -15,7 +15,7 @@ const normalizePort = val => {
   return false;
 };
 //Préciser à l'application express sur quel port elle va tourné
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 //la fonction errorHandler recherche les différentes erreurs
 const errorHandler = error => {

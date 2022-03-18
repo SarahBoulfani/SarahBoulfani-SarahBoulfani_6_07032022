@@ -1,11 +1,14 @@
-//Imporet package dotenv pour utiliser les variables d'environnement
+//Importer package dotenv pour utiliser les variables d'environnement
 require('dotenv').config();
 //console.log(process.env); // remove this after you've confirmed it working
-//importer express
+
+//Importer express
 const express = require('express');
-//créer notre application en utilisant la méthode express ce qui permet de créer une application express
+
+//Créer notre application en utilisant la méthode express ce qui permet de créer une application express
 const app = express();
-//Express prend toutes les requêtes qui ont comme Content-Type application/json et met à disposition leur  body  directement sur l'objet req
+
+//Utiliser express.json pour prendre toutes les requêtes qui ont comme Content-Type application/json et mettre à disposition leur  body  directement sur l'objet req
 app.use(express.json());
 
 //Importer le router user
@@ -13,14 +16,14 @@ const userRoutes = require('./routes/user');
 //Importer le router sauce
 const saucesRoutes = require('./routes/sauce');
 
-
+//Importer path qui donne accés au chemin de notre systeme de fichiers
+const path = require('path');
 
 //Ajout mongoose, le package Mongoose facilite les interactions entre notre application Express et notre base de données MongoDB.
 const mongoose = require('mongoose');
-//Imporet path qui donne accés au chemin de notre systeme de fichiers
-const path = require('path');
 
-//Connexion de l'API à notre base de données
+
+//Connexion de l'API à notre base de données mongoDB
 mongoose.connect(`mongodb+srv://${process.env.BD_USERNAME}:${process.env.BD_SECRET_KEY}@${process.env.BD_CLUSTER_NAME}.mongodb.net/${process.env.BD_NAME}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
@@ -29,17 +32,17 @@ mongoose.connect(`mongodb+srv://${process.env.BD_USERNAME}:${process.env.BD_SECR
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-    
-//Ajout des headers
+
+//Ajout des headers pour accéder à notre API depuis n'importe quelle origine et avec les méthodes mentionnées. Le middleware ne prend pas d'adresse afin de s'appliquer à toutes les routes
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
 //Gérer la route vers le dossier images et traiter les requêtes vers la route /image. express.static gère de manière statique la ressource images à chaque requête vers la route images.
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
 //Enregister le router user
 app.use('/api/auth', userRoutes);
 //Enregistrer notre routeur pour toutes les demandes effectuées vers /api/sauces
