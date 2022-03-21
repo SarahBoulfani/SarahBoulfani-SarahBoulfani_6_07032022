@@ -10,7 +10,7 @@ can then run the server with `nodemon server`.
 The server should run on `localhost` with default port `3000`. If your browser fails to launch, or shows a 404 error, navigate your browser to http://localhost:3000 .
 Use `Ctrl+C` in the terminal to stop the local server.
 
-## DATA ##
+## DATA BASE ##
 The data base is provided by MongoDB.
 
 ## ENVIRONMENTAL VARIABLES ##
