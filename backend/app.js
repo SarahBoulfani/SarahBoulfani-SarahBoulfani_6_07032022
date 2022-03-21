@@ -8,6 +8,9 @@ const express = require('express');
 //Importer helmet
 const helmet = require("helmet");
 
+//Importer path qui donne accés au chemin de notre systeme de fichiers
+const path = require('path');
+
 //Créer notre application en utilisant la méthode express ce qui permet de créer une application express
 const app = express();
 
@@ -15,15 +18,12 @@ const app = express();
 app.use(express.json());
 
 // Utilisation de 'helmet' sur l'application 'express' 
-//app.use(helmet({crossOriginResourcePolicy: false}));
+app.use(helmet({crossOriginResourcePolicy: false}));
 
 //Importer le router user
 const userRoutes = require('./routes/user');
 //Importer le router sauce
 const saucesRoutes = require('./routes/sauce');
-
-//Importer path qui donne accés au chemin de notre systeme de fichiers
-const path = require('path');
 
 //Ajout mongoose, le package Mongoose facilite les interactions entre notre application Express et notre base de données MongoDB.
 const mongoose = require('mongoose');
