@@ -15,10 +15,10 @@ The data base is provided by MongoDB.
 
 ## ENVIRONMENTAL VARIABLES ##
 To access to the data base you need to create from the "backend" folder a ".env" file. You can then add these environmental variables in ".env" file.
-BD_USERNAME
-BD_SECRET_KEY
-BD_CLUSTER_NAME
-BD_NAME
+- BD_USERNAME
+- BD_SECRET_KEY
+- BD_CLUSTER_NAME
+- BD_NAME
 
 
 
