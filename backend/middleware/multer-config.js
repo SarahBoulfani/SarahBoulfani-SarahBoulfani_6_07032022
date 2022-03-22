@@ -15,9 +15,10 @@ const storage = multer.diskStorage({
   //filename: pour dire à multer quel nom de fichier utilisé, car si on utilise le nom d'origine on risque d'avoir deux fichiers avec le meme nom par exemple
   filename: (req, file, callback) => {
     const name = file.originalname.split(' ').join('_');//Genérer le nouveau nom et éliminer les espace grace à split et les remplacer par des underscore grace à la methode join
+    const fileName = name.split('.');//Genérer le nom grace à split en séparant l'extention du nom de fichier
     const extension = MIME_TYPES[file.mimetype]; //Utiliser les mime-types pour générer l'extention des images car on a pas accés au extention des fichiers envoyé
     //appel du fichier par son nom complet: name + timestamp +'.' +extension du fichier
-    callback(null, name + Date.now() + '.' + extension);//Appeler le callback pour crée le nom au complet 
+    callback(null, fileName[0] + Date.now() + '.' + extension);//Appeler le callback pour crée le nom au complet 
   }
 });
 //exporter le middleware multer configuré en passant l'objet storage

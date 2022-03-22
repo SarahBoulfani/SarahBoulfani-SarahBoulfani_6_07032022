@@ -20,6 +20,18 @@ To access to the data base you need to create from the "backend" folder a ".env"
 - BD_CLUSTER_NAME
 - BD_NAME
 
+## Images ##
+You need to create from the "backend" folder a "images" folder.
+
+## Password ##
+The password must respect the following schema :
+- Minimum length 8
+- Maximum length 50
+- Must have uppercase letters
+- Must have lowercase letters
+- Must have at least 2 digits
+- Should not have spaces
+
 
 
 
