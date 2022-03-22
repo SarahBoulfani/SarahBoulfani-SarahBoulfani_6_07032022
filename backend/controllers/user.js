@@ -24,7 +24,7 @@ exports.signup = (req, res, next) => {
 
 };
 
-//middleware avec une fonction pour verifier les identifiants d'un utilisateur en comparant le hash de mot de passe entré avec le hash enregistré dans la base de données (connecter des utilisateurs existants)
+//Middleware avec une fonction pour verifier les identifiants d'un utilisateur en comparant le hash de mot de passe entré avec le hash enregistré dans la base de données (connecter des utilisateurs existants)
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email }) //Trouver l'utilisateur pour qui le mail dans la base de données correspond à l'adresse mail envoyé dans le body de la reqete 
     .then(user => {

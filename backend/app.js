@@ -14,10 +14,10 @@ const path = require('path');
 //Créer notre application en utilisant la méthode express ce qui permet de créer une application express
 const app = express();
 
-//Utiliser express.json pour prendre toutes les requêtes qui ont comme Content-Type application/json et mettre à disposition leur  body  directement sur l'objet req
+//Utiliser express.json pour prendre toutes les requêtes qui ont comme Content-Type application/json et mettre à disposition leur body directement sur l'objet req
 app.use(express.json());
 
-// Utilisation de 'helmet' sur l'application 'express' 
+//Utilisation de 'helmet' sur l'application 'express' 
 app.use(helmet({crossOriginResourcePolicy: false}));
 
 //Importer le router user

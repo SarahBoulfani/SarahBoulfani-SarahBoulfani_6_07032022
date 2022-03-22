@@ -1,8 +1,7 @@
 //Importer le model sauce
 const Sauce = require('../models/sauce');
-//importer package fs de node fs:file system qui nous donne accès aux fonctions qui nous permettent de modifier le système de fichiers, y compris aux fonctions permettant de supprimer les fichiers.
+//Importer package fs de node fs:file system qui nous donne accès aux fonctions qui nous permettent de modifier le système de fichiers, y compris aux fonctions permettant de supprimer les fichiers.
 const fs = require('fs');
-
 
 //Ajouter une sauce 
 exports.createSauce = (req, res, next) => {
